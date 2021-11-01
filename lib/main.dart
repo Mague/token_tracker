@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width * 0.85,
+                                        MediaQuery.of(context).size.width * 0.80,
                                     child: Card(
                                       child: ListTile(
                                         onTap: (){
@@ -172,11 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 8.0),
-                                    alignment: Alignment.centerRight,
+                                    margin: EdgeInsets.only(left: 1.0),
+                                    alignment: Alignment.center,
                                     child:IconButton(
                                       tooltip: "Remove",
-                                      alignment: Alignment.centerRight,
+                                      alignment: Alignment.center,
                                       onPressed: ()async{
                                         var remove=widget.controller.removeToken(token.contractAddress);
                                         if(remove){
