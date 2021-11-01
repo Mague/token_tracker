@@ -23,7 +23,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Token'),
+        title: Text('Calculator'),
       ),
       body: Padding(
           padding: EdgeInsets.all(16.0),
