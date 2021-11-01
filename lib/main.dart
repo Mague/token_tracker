@@ -135,32 +135,65 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             final token = snapshot.data[index];
-                            return Card(
-                              child: ListTile(
-                                onTap: () {
-                                  _showCalculator(token);
-                                },
-                                title: Text(token.name),
-                                subtitle: Row(
-                                  children: [
-                                    Text(
-                                    token.price.toString() +
-                                        " \$ "),
-                                    SizedBox(
-                                      width: 1.0,
-                                    ),
-                                    Text(token.symbol),
-                                    Text(
-                                      "${token.priceChange}",
-                                      style: TextStyle(
-                                        color: token.priceChange.toString().indexOf("+")!=-1?Colors.green:Colors.red,
+                            return Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.85,
+                                    child: Card(
+                                      child: ListTile(
+                                        onTap: (){
+                                          _showCalculator(token);
+                                        },
+                                        title: Text(token.name),
+                                        subtitle: Row(
+                                          children: [
+                                            Text(
+                                            token.price.toString() +
+                                                " \$ "),
+                                            SizedBox(
+                                              width: 1.0,
+                                            ),
+                                            Text(token.symbol),
+                                            Text(
+                                              "${token.priceChange}",
+                                              style: TextStyle(
+                                                color: token.priceChange.toString().indexOf("+")!=-1?Colors.green:Colors.red,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        leading: (token.imgUri == "")
+                                          ?Icon(FontAwesomeIcons.bitcoin):
+                                          Image.network(token.imgUri,width: 30,height: 30),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                leading: (token.imgUri == "")
-                                  ?Icon(FontAwesomeIcons.bitcoin):
-                                  Image.network(token.imgUri,width: 30,height: 30),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 8.0),
+                                    alignment: Alignment.centerRight,
+                                    child:IconButton(
+                                      tooltip: "Remove",
+                                      alignment: Alignment.centerRight,
+                                      onPressed: ()async{
+                                        var remove=widget.controller.removeToken(token.contractAddress);
+                                        if(remove){
+                                          
+                                          var tokens=await widget.controller.restoreTokens();
+                                          setState(() {
+                                            _tokens=tokens;
+                                          });
+                                        }
+                                      }, 
+                                      icon: Icon(
+                                        FontAwesomeIcons.trash,
+                                        color: Colors.red
+                                        )
+                                      ),
+                                  )
+                                ],
                               ),
                             );
                           },

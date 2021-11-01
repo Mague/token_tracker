@@ -30,6 +30,16 @@ class Controller extends GetxController {
     box.write('tokens', storageTokenList);
   }
 
+  bool removeToken(String contract){
+    storageTokenList = box.read("tokens") != null ? box.read("tokens"):{};
+    if(storageTokenList.length>0){
+      _tokens = [];
+      storageTokenList.remove(contract);
+      box.write('tokens', storageTokenList);
+      return true;
+    }
+    return false;
+  }
   Future<List<Token>> restoreTokens() async {
     //box.write('tokens',{});
     storageTokenList = box.read('tokens') != null ? box.read('tokens') : {};
