@@ -10,6 +10,10 @@ class Controller extends GetxController {
   Map storageTokenList = {};
   bool get isDark => box.read('darkmode') ?? false;
   List<Token> get getTokens => _tokens;
+  /* ThemeData(
+    primarySwatch:Colors.blue,
+    scaffoldBackgroundColor:Colors.blue[100]
+  ) */
   ThemeData get theme => isDark ? ThemeData.dark() : ThemeData.light();
   void changeTheme(bool val) => box.write('darkmode', val);
   /* void setToken(String simbol,num price)=>box.write(simbol,price);

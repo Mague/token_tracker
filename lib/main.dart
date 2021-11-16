@@ -98,7 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
     /* widget.controller.box.erase();
     widget.controller.box.remove('tokens'); */
     
-    
+    HttpPVURepository pvuRepository = HttpPVURepository();
+    pvuRepository.getAddressInfo("0xff94045d4c9a5d923e635bee0616d71e9972d605","BSC");
    /*  if(widget.controller.getTokens.length>0){
       setState(() {
         _tokens=widget.controller.getTokens;

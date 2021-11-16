@@ -1,4 +1,5 @@
 import 'package:token_traker/models/token.dart';
+import 'package:token_traker/models/wallet.dart';
 import 'package:token_traker/service/pvu_repository.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -20,6 +21,7 @@ class HttpPVURepository implements PVURepository{
       return Token("BSC","","",0,0,"","","");
     }
   }
+  @override
   Future<Token> getPriceBscScan({String contract='0x31471e0791fcdbe82fbf4c44943255e923f1b794',String network='BSC'})async{
     final webScraper = WebScraper(network=="BSC"?'https://bscscan.com':'https://etherscan.io/');
     print("Contrato: $contract");
@@ -39,5 +41,33 @@ class HttpPVURepository implements PVURepository{
     }else{
       return Token("BSC","", "", 0, 0, "", "","0.0%");
     }
+  }
+  @override
+  Future<Wallet> getAddressInfo(String addressWallet,String network)async{
+    String url=(network=="BSC")?'https://bscscan.com':'https://etherscan.io/';
+    //String network="";
+    String name="";
+    String symbol="";
+    double price=0.0;
+    num balanceBnb=0.0;
+    num bnbValue=0.0;
+    List<Token> tokens=[];
+    final webScraper = WebScraper(url);
+    if( await webScraper.loadWebPage('/address/$addressWallet')){
+      var tokensListElement = webScraper.getElement('ul.list-unstyled>li.list-custom-BEP-20', ['title']);
+      List<Map<String, dynamic>> tokensLinkElement = webScraper.getElement('ul.list-unstyled>li.list-custom-BEP-20>a', ['href']);
+      List<Map<String, dynamic>> tokensNameElement = webScraper.getElement('ul.list-unstyled>li.list-custom-BEP-20>a>div>div.d-flex>span.list-name>span[data-toggle]', ['title']);
+      List<Map<String, dynamic>> tokensSymbolElement = webScraper.getElement('ul.list-unstyled>li.list-custom-BEP-20>a>div>div.d-flex>span.list-name', []);
+      List<Map<String, dynamic>> tokensAmountlElement = webScraper.getElement('ul.list-unstyled>li.list-custom-BEP-20>a>div>span.list-amount', ['title']);
+      List<Map<String, dynamic>> tokensUsdAmountlElement = webScraper.getElement(
+          'ul.list-unstyled>li.list-custom-BEP-20>a>div.text-right>span.list-usd-value',
+          ['title']);
+
+      print("->"+tokensListElement.length.toString()+"|"+ tokensLinkElement.length.toString());
+      print(tokensNameElement);
+      print(tokensSymbolElement);
+      return Wallet(network,name,symbol,price,balanceBnb,bnbValue,tokens);
+    }
+    return Wallet(network,name,symbol,price,balanceBnb,bnbValue,tokens);
   }
 }
