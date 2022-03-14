@@ -14,7 +14,6 @@ class HttpPVURepository implements PVURepository{
     Token data;
     if(response.statusCode == 200){
       Map<String, dynamic> body = convert.jsonDecode(response.body);
-
       data=Token.fromJson(body["data"],contract);
       return data;
     }else{
@@ -24,8 +23,9 @@ class HttpPVURepository implements PVURepository{
   @override
   Future<Token> getPriceBscScan({String contract='0x31471e0791fcdbe82fbf4c44943255e923f1b794',String network='BSC'})async{
     final webScraper = WebScraper(network=="BSC"?'https://bscscan.com':'https://etherscan.io/');
+    
     print("Contrato: $contract");
-    if( await webScraper.loadWebPage('/token/$contract')){
+    if( await webScraper.loadFullURL('/token/$contract/')){
       var priceElement = webScraper.getElement('span.d-block>span[data-title]',['data-title']);
       var logoElement = webScraper.getElement('img.u-sm-avatar',['src']);
       var tokenNameElement = webScraper.getElement('div.media-body>span.text-secondary',['title']);

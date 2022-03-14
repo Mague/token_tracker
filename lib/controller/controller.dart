@@ -57,8 +57,16 @@ class Controller extends GetxController {
           var values = tokenMap.value;
           print(values);
           if(values['contractAddress'].length >0){
-            Token tokenAux = await pvuRepository.getPriceBscScan(
+            print(GetPlatform.isWeb);
+            Token tokenAux;
+            if(GetPlatform.isWeb){
+              print("Es web lol");
+              tokenAux=await pvuRepository.getPrice(contract: values['contractAddress'],network: values['network']);
+              print(tokenAux);
+            }else{
+              tokenAux=await pvuRepository.getPriceBscScan(
                 contract: values['contractAddress'],network: values['network']);
+            }
             /* final token = Token(value['name'], value['symbol'], value['price'],
               value['price_BNB'], value['contractAddress']); */
            // print(tokenAux.symbol);
